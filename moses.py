@@ -4,6 +4,7 @@ from datetime import datetime
 exec(base64.b64decode({2:str,3:lambda b:bytes(b,'UTF-8')}[sys.version_info[0]]('BASE64 ENCODED PROGRAM GOES HERE')))
 
 # TODO: COMPLETE THE PROGRAM, as it is still under construction and currently incomplete
+# TODO: obfuscate all function and variable names after completion
 
 # NOTE: READ INSTRUCTIONS BELOW
 #
