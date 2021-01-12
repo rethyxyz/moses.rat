@@ -1,4 +1,5 @@
 import time, os
+# TODO: define path to webpages as var
 # TODO: opt to use subprocesses instead of os.system
 # NOTE: ssh key is used instead of password
 # TODO: add a function that asks if you want to load saved or use others
@@ -6,7 +7,7 @@ import time, os
     # files to be written to root (remote_control.py's) dir.
 
 def main():
-    ssh_username = "USER"
+    ssh_username = "USERNAME"
     ssh_ip_address = "IP_ADDRESS"
     #can be defined as a str or int
     ssh_port = "PORT"

