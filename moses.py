@@ -5,8 +5,7 @@ from datetime import datetime
 
 # TODO: obfuscate all function and variable names after completion
 # TODO: setup tor capability
-# TODO: change os.system to subprocess
-
+# TODO: change os.system to subprocess (check ssh_chat program)
 # TODO: COMPLETE THE PROGRAM, as it is still under construction and currently incomplete
 # TODO: check anti-virus evasion/efficacy again
 # NOTE: READ INSTRUCTIONS BELOW
@@ -21,7 +20,7 @@ from datetime import datetime
 
 def main():
     if (check_platform() == "32-bit"):
-        # TODO: implement a self-destruct function? (maybe)
+        # TODO: implement a self-destruct function if 32-bit? (maybe)
         pass
 
     URL = "https://website.tld" #NO SLASH AT THE END OF THE URL
