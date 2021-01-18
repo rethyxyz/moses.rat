@@ -26,6 +26,7 @@ def main():
     else:
         ssh_ip_address, ssh_port, ssh_username = load_ssh_credentials()
         choice = get_user_input("\nSSH username: " + ssh_username + "\nSSH server IP address: " + ssh_ip_address + "\nSSH server port: " + ssh_port + "\n\nDo you want to load these credentials? (Y/N) ")
+        choice = choice.lower()
 
         if (choice == "y"):
             ssh_ip_address, ssh_port, ssh_username = load_ssh_credentials()
@@ -110,7 +111,7 @@ def check_for_ssh_credentials():
     return True
 
 def send_command(page_number, module, ssh_ip_address, ssh_port, ssh_username):
-    os.system("ssh " + str(ssh_username) + "@" + str(ssh_ip_address) + " -p " + str(ssh_port) + " 'echo '" + str(module) + "' > /var/www/website/tar" + str(page_number) + ".html && sudo -S systemctl restart nginx'")
+    os.system("ssh " + str(ssh_username) + "@" + str(ssh_ip_address) + " -p " + str(ssh_port) + " 'echo '" + str(module) + "' > /var/www/website/tar" + str(page_number) + ".html && systemctl restart nginx'")
 
 def load_ssh_credentials():
     f = open("ssh_ip_address.txt", "r")
