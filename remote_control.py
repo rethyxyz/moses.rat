@@ -2,6 +2,7 @@ import time, os
 # TODO: define path to webpage folder on server as var definition
 # TODO: opt to use subprocesses instead of os.system
 # TODO: encrypt username, ip address, and port when written to file
+# TODO: implement kill command
 
 # 1) Setup SSH keys with SSH server
 
@@ -30,7 +31,7 @@ def main():
 
         if (choice == "y"):
             ssh_ip_address, ssh_port, ssh_username = load_ssh_credentials()
-            print(":: loaded saved SSH credentials")
+            print(":: loaded saved SSH credentials\n")
         else:
             ssh_username = get_user_input("SSH username: ")
             ssh_ip_address = get_user_input("SSH server IP address: ")
@@ -108,6 +109,7 @@ def check_for_ssh_credentials():
     for path in paths:
         if (not os.path.isfile(path)):
             return False
+
     return True
 
 def send_command(page_number, module, ssh_ip_address, ssh_port, ssh_username):
@@ -140,9 +142,9 @@ def clear_pages(ssh_ip_address, ssh_port, ssh_username):
 
     time.sleep(15)
 
-    for x in range(1, 3):
+    for x in range(1, 4):
         os.system("ssh " + ssh_username + "@" + ssh_ip_address + " -p " + ssh_port + " 'echo '' > /var/www/website/tar" + str(x) + ".html'")
 
-    os.system("ssh " + ssh_username + "@" + ssh_ip_address + " -p " + ssh_port + " 'sudo -S systemctl restart nginx'")
+    os.system("ssh " + ssh_username + "@" + ssh_ip_address + " -p " + ssh_port + " 'systemctl restart nginx'")
 
 main()

