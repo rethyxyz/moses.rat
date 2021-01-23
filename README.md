@@ -7,6 +7,7 @@
 * Modules include:
 	* Screenshot
 	* Command execution
+	* Fetch public IP
 
 # Features
 * All RAT command data requested is uploaded to a https://mega.nz account you configure
