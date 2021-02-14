@@ -1,6 +1,5 @@
 import time, os
 # TODO: define path to webpage folder on server as var definition
-# TODO: opt to use subprocesses instead of os.system
 # TODO: encrypt username, ip address, and port when written to file
 # TODO: implement kill command
 
