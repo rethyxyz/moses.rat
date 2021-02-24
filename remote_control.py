@@ -5,6 +5,8 @@ import time, os
 
 # 1) Setup SSH keys with SSH server
 
+
+
 def main():
     # reduce redundancy later (clear_page() calls...)
     if (not check_for_ssh_credentials()):
@@ -108,7 +110,6 @@ def check_for_ssh_credentials():
     for path in paths:
         if (not os.path.isfile(path)):
             return False
-
     return True
 
 def send_command(page_number, module, ssh_ip_address, ssh_port, ssh_username):
@@ -126,7 +127,6 @@ def load_ssh_credentials():
     f = open("ssh_username.txt", "r")
     ssh_username = f.read()
     f.close()
-
     return ssh_ip_address, ssh_port, ssh_username
 
 

